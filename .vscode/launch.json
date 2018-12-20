@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - JwtUtilTest",
+            "request": "launch",
+            "mainClass": "www.ezrpro.com.util.JwtUtilTest",
+            "projectName": "distribution-center-common"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - App",
             "request": "launch",
             "mainClass": "www.ezrpro.com.App",
