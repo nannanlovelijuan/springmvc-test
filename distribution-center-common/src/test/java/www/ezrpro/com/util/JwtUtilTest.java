@@ -8,8 +8,6 @@ import www.ezrpro.com.model.HttpRespon;
 import www.ezrpro.com.model.Token;
 
 public class JwtUtilTest {
-
-
     public static void main(String[] args) {
         JwtUtil jwtUtil = new JwtUtil();
 
@@ -31,3 +29,6 @@ public class JwtUtilTest {
     }
 
 }
+
+
+
