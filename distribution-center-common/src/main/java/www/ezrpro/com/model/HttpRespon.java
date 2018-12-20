@@ -1,11 +1,11 @@
 package www.ezrpro.com.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@EqualsAndHashCode
+@Getter
+@Setter
 public class HttpRespon<T> extends BaseRespon{
-    
+
     private T result;
 }
