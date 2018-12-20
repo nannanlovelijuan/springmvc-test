@@ -1,6 +1,5 @@
 package www.ezrpro.com.util;
 
-import javax.sound.sampled.SourceDataLine;
 
 import com.alibaba.fastjson.JSON;
 
@@ -16,10 +15,10 @@ public class JwtUtilTest {
         // "\n signTime:"+token.getSignTime()+
         // "\n expireTime:"+token.getExpireTime());
 
-        // String tokenStr = token.getToken();
+        String tokenStr = token.getToken();
 
         // System.out.println("token:"+JSON.toJSONString(token));
-        String tokenStr ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiIxIiwiaXNzIjoic2VydmljZSIsImV4cCI6MTU0NTI5NTgyOSwiaWF0IjoxNTQ1Mjk1Nzk5fQ.yQHlmQEEEXkd0ZBHd1AiqdpnyXrhWQkVOpNnvtsyyLE";
+        // String tokenStr ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiIxIiwiaXNzIjoic2VydmljZSIsImV4cCI6MTU0NTI5NTgyOSwiaWF0IjoxNTQ1Mjk1Nzk5fQ.yQHlmQEEEXkd0ZBHd1AiqdpnyXrhWQkVOpNnvtsyyLE";
 
         
 

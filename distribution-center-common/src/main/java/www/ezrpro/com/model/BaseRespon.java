@@ -1,8 +1,10 @@
 package www.ezrpro.com.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public abstract class BaseRespon{
 
     private boolean status;
