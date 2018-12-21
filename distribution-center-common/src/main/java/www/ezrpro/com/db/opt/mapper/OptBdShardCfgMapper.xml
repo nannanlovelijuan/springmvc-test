@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="www.ezrpro.com.db.opt.dao.OptBdShardCfgMapper" >
+  <resultMap id="BaseResultMap" type="www.ezrpro.com.db.opt.model.OptBdShardCfg" >
+    <constructor >
+      <idArg column="Id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="ShardingId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="DataCenter" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="RegionCount" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="ClusterId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="ShardingGrpId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="ESHost" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="ESId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="HBNameSpace" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="ZKId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, ShardingId, DataCenter, RegionCount, ClusterId, ShardingGrpId, ESHost, ESId, 
+    HBNameSpace, ZKId
+  </sql>
+  <select id="selectByShardingId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from opt_bd_shard_cfg
+    where ShardingId = #{shardingId,jdbcType=INTEGER}
+  </select>
+
+</mapper>

@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - DbUtilTest",
+            "request": "launch",
+            "mainClass": "www.ezrpro.com.util.DbUtilTest",
+            "projectName": "distribution-center-common"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - JwtUtilTest",
             "request": "launch",
             "mainClass": "www.ezrpro.com.util.JwtUtilTest",

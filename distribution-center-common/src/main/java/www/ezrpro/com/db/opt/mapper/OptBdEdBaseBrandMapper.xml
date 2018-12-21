@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="www.ezrpro.com.db.opt.dao.OptBdEdBaseBrandMapper" >
+  <resultMap id="BaseResultMap" type="www.ezrpro.com.db.opt.model.OptBdEdBaseBrand" >
+    <constructor >
+      <idArg column="Id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="CopId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="Name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="IsActive" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="CrmDbShardingId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="MallDbShardingId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="CmsDbShardingId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="RtlDbShardingId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="LogDbShardingId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="ESDbShardingId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="ESDbShardingType" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="ESProdutShardingId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="ESProdutShardingType" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="ESReportShardingId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="CreateUser" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="CreateDate" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="LastModifiedUser" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="LastModifiedDate" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="ZKId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="ShardingGrpId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, CopId, Code, Name, IsActive, CrmDbShardingId, MallDbShardingId, CmsDbShardingId, 
+    RtlDbShardingId, LogDbShardingId, ESDbShardingId, ESDbShardingType, ESProdutShardingId, 
+    ESProdutShardingType, ESReportShardingId, CreateUser, CreateDate, LastModifiedUser, 
+    LastModifiedDate, ZKId, ShardingGrpId
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from opt_bd_ed_base_brand
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+</mapper>
