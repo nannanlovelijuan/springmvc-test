@@ -24,7 +24,7 @@ public class ClientRequest{
     /**
      * brandId或者shardingId
      */
-    private String idType;
+    private int idType;
 
     /**
      * 表名,服务端分配，有可能是虚拟的表名,例如行为分析的数据

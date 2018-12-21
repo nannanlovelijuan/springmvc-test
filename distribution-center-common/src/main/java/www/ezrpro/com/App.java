@@ -12,6 +12,7 @@ public class App {
     }
 
     public static void test(){
+
         System.out.println("this is web call common");
     }
 }
