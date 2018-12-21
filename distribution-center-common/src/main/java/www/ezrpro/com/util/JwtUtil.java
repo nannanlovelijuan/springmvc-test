@@ -14,6 +14,13 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import www.ezrpro.com.model.HttpRespon;
 import www.ezrpro.com.model.Token;
 
+/**
+* 
+* @auth: nanChen
+* @date: 2018-12-21  10:58:02
+* 
+*/
+
 public class JwtUtil {
 
    

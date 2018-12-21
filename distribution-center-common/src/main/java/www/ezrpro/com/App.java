@@ -1,9 +1,11 @@
 package www.ezrpro.com;
 
 /**
- * Hello world!
- *
- */
+* 
+* @auth: nanChen
+* @date: 2018-12-21  10:58:09
+* 
+*/
 public class App {
     public static void main( String[] args ){
         System.out.println( "Hello World!" );
