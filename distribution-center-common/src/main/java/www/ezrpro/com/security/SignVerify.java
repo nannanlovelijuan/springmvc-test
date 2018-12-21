@@ -4,6 +4,8 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
+import org.joda.time.DateTime;
+
 /**
  * 
  * @auth: nanChen
@@ -25,6 +27,15 @@ public class SignVerify{
      */
     public static boolean verifySign(String appId,int timestamp,String nonce,String sign,String signature){
         
+
+
+        DateTime now = new DateTime();
+        
+        DateTime signTime = now.plusMinutes(-5);
+        
+        if(signTime.getMillis()/1000>timestamp){
+            return false;
+        }
         String conStr = "app_id=" + appId + "&nonce=" + nonce + "&sign=" + sign + "&timestamp=" + timestamp;
         String secret = "abcdef";
         String ss = "";
