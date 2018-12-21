@@ -3,7 +3,7 @@ package www.ezrpro.com.util;
 
 import com.alibaba.fastjson.JSON;
 
-import www.ezrpro.com.model.HttpRespon;
+import www.ezrpro.com.model.ServiceRespon;
 import www.ezrpro.com.model.Token;
 
 public class JwtUtilTest {
@@ -22,7 +22,7 @@ public class JwtUtilTest {
 
         
 
-        HttpRespon<String> respon= jwtUtil.verifyToken(tokenStr, 1);
+        ServiceRespon<String> respon= jwtUtil.verifyToken(tokenStr, 1);
         System.out.println("verifgToken:"+JSON.toJSONString(respon));
     
     }

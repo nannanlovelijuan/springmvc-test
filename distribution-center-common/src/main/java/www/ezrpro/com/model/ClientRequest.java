@@ -13,7 +13,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class HttpRequest{
+public class ClientRequest{
 
 
     /**

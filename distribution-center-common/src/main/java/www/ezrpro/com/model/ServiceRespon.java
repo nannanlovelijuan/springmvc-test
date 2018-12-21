@@ -11,7 +11,7 @@ import lombok.Setter;
 */
 @Getter
 @Setter
-public class HttpRespon<T> extends BaseRespon{
+public class ServiceRespon<T> extends BaseRespon{
 
     /**
      * 具体数据
