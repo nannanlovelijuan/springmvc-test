@@ -11,7 +11,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 
-import www.ezrpro.com.model.HttpRespon;
+import www.ezrpro.com.model.ServiceRespon;
 import www.ezrpro.com.model.Token;
 
 /**
@@ -65,9 +65,9 @@ public class JwtUtil {
     }
 
 
-    public HttpRespon<String> verifyToken(String tokenStr,int appId){
+    public ServiceRespon<String> verifyToken(String tokenStr,int appId){
         String ss = secret+appId;
-        HttpRespon<String> respon = new HttpRespon<String>();
+        ServiceRespon<String> respon = new ServiceRespon<String>();
         try {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256(ss)).build();
             verifier.verify(tokenStr);
