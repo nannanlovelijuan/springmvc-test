@@ -37,9 +37,14 @@ public class ClientRequest{
     private String data;
     
     /**
-     * 服务端分配的应用id,用来区分数据来自哪个业务
+     * 数据中心分配的应用id,用来区分数据来自哪个业务
      */
     private String appId;
+
+    /**
+     * appId添加的描述
+     */
+    private String appName;
 
     /**
      * 压缩算法
