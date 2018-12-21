@@ -54,18 +54,13 @@ public class KafkaUtil {
 
     public  static Boolean createTopic(String topicname){
         try {
-            Boolean existflag = isExistTopic(topicname);
-            Boolean flag;
-            if (existflag == true){
-                flag = true;
-            }else {
-                AdminClient adminClient = AdminClient.create(kafkaAdmin.getConfig());
-                NewTopic newTopic = new NewTopic(topicname,3,(short)3);
-                List<NewTopic> topicList = Arrays.asList(newTopic);
-                adminClient.createTopics(topicList);
-                adminClient.close();
-                flag = isExistTopic(topicname);
-            }
+            boolean flag;
+            AdminClient adminClient = AdminClient.create(kafkaAdmin.getConfig());
+            NewTopic newTopic = new NewTopic(topicname,3,(short)3);
+            List<NewTopic> topicList = Arrays.asList(newTopic);
+            adminClient.createTopics(topicList);
+            adminClient.close();
+            flag = isExistTopic(topicname);
             return flag;
         } catch (Exception e) {
             e.printStackTrace();
