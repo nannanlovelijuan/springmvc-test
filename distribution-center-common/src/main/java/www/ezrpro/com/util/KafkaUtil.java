@@ -1,20 +1,20 @@
 package www.ezrpro.com.util;
 
 import org.apache.kafka.clients.admin.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaAdmin;
 import www.ezrpro.com.db.opt.model.OptBdEdBaseBrand;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 /**
  * @author liyuelin
  * @Date 2018/12/21
  */
 public class KafkaUtil {
-
-    @Autowired static KafkaAdmin kafkaAdmin;
     /**
      *
      * @param id
@@ -37,7 +37,15 @@ public class KafkaUtil {
         return getShardingGrp(id,idtype)+appid+tablieName;
     }
 
-    public static Boolean isExistTopic(String topicname){
+    public static KafkaAdmin admin() {
+        Map<String, Object> configs = new HashMap<>();
+        String hosts = "cluster2-slave2:9092,cluster2-slave3:9092,cluster2-slave4:9092";
+        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, hosts);
+        return new KafkaAdmin(configs);
+    }
+
+    public static Boolean isExistTopic(String topicname) {
+        KafkaAdmin kafkaAdmin = admin();
         try {
             AdminClient adminClient = AdminClient.create(kafkaAdmin.getConfig());
             ListTopicsOptions listTopicsOptions = new ListTopicsOptions();
@@ -52,19 +60,27 @@ public class KafkaUtil {
         }
     }
 
-    public  static Boolean createTopic(String topicname){
+    public static Boolean createTopic(String topicname) {
         try {
-            boolean flag;
-            AdminClient adminClient = AdminClient.create(kafkaAdmin.getConfig());
-            NewTopic newTopic = new NewTopic(topicname,3,(short)3);
-            List<NewTopic> topicList = Arrays.asList(newTopic);
-            adminClient.createTopics(topicList);
-            adminClient.close();
-            flag = isExistTopic(topicname);
+            Boolean existflag = isExistTopic(topicname);
+            Boolean flag ;
+            if (existflag == true){
+                flag = true;
+            }else {
+                KafkaAdmin kafkaAdmin = admin();
+                AdminClient adminClient = AdminClient.create(kafkaAdmin.getConfig());
+                NewTopic newTopic = new NewTopic(topicname,3,(short)3);
+                List<NewTopic> topicList = Arrays.asList(newTopic);
+                adminClient.createTopics(topicList);
+                adminClient.close();
+                flag = isExistTopic(topicname);
+            }
             return flag;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
+
+
 }

@@ -32,17 +32,32 @@ public class ProducerController {
             ){
         String data = request.getParameter("data");
         ClientRequest clientRequest = JSON.parseObject(data,ClientRequest.class);
+        boolean verification = SignVerify.verifySign(appId,timestamp,nonce,sign,signature);
 
+        String dataJson = clientRequest.getData();
         ServiceRespon serviceRespon = new ServiceRespon();
-        if (clientRequest.getIdType()!= 1 || clientRequest.getIdType()!=2){
+        if (!verification){
             serviceRespon.setStatus(false);
             serviceRespon.setStatusCode(401);
-            serviceRespon.setMsg("idtype = "+clientRequest.getIdType()+"\t不符合规则");
+            serviceRespon.setMsg("验证失败！");
+            return  serviceRespon;
+        }else if (clientRequest.getIdType()!= 1 && clientRequest.getIdType()!=2){
+            serviceRespon.setStatus(false);
+            serviceRespon.setStatusCode(401);
+            serviceRespon.setMsg("idtype = "+clientRequest.getIdType()+"\t"+"不符合规则");
+            return serviceRespon;
+        }else if (dataJson == null){
+            serviceRespon.setStatus(false);
+            serviceRespon.setStatusCode(401);
+            serviceRespon.setMsg("消息数据为空！");
+            return  serviceRespon;
         }
         String topic = KafkaUtil.getTopic(clientRequest.getId(),clientRequest.getIdType(),clientRequest.getAppId(),clientRequest.getTableName());
-        String dataJson = clientRequest.getData();
+
         producerService.sendJson(topic,dataJson);
-        System.out.println(topic);
+        serviceRespon.setMsg("消息正在发送");
+        serviceRespon.setStatus(true);
+        serviceRespon.setStatusCode(200);
         return serviceRespon;
     }
 }
