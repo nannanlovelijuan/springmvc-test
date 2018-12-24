@@ -44,4 +44,10 @@ public class Signature{
      */
     private String signature;
 
+
+    /**
+     * 有效期，分钟
+     */
+    private int expireMinuts;
+
 }
