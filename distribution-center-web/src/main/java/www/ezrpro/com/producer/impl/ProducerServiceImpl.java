@@ -29,27 +29,30 @@ public class ProducerServiceImpl implements ProducerService {
 
     //发送消息方法
     public void sendJson(String topic, String json) {
-        if (!KafkaUtil.isExistTopic(topic)){
-            KafkaUtil.createTopic(topic);
-        }
+
         JSONObject jsonObj = JSON.parseObject(json);
 
         jsonObj.put("topic", topic);
         jsonObj.put("ts", System.currentTimeMillis() + "");
 
         logger.info("json+++++++++++++++++++++  message = {}", jsonObj.toJSONString());
-        String key = String.valueOf(new Random().nextInt(9));
-        ListenableFuture<SendResult<String, String>> future = template.send(topic, key,jsonObj.toJSONString());
-        future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
-            @Override
-            public void onSuccess(SendResult<String, String> result) {
-                System.out.println("msg OK." + result.toString());
-            }
+        if (KafkaUtil.createTopic(topic)){
+            String key = String.valueOf(new Random().nextInt(9));
+            ListenableFuture<SendResult<String, String>> future = template.send(topic, key,jsonObj.toJSONString());
+            future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
+                @Override
+                public void onSuccess(SendResult<String, String> result) {
+                    logger.info("msg OK." + result.toString());
+                }
 
-            @Override
-            public void onFailure(Throwable ex) {
-                System.out.println("msg send failed: ");
-            }
-        });
+                @Override
+                public void onFailure(Throwable ex) {
+                    logger.warn("msg send failed: ");
+                }
+            });
+        }else{
+            logger.error("主题创建失败！");
+        }
+
     }
 }
