@@ -81,7 +81,7 @@ public class SignVerify{
                 if (jedisLock.tryLock()) {
                     signature = new Signature();
                     signature.setAppId(appId);
-                    signature.setAppSecret("www.ezrpro.com.bigdata.secret:"+appId);
+                    signature.setAppSecret(secretKey+appId);
                     signature.setExpireMinuts(minuts);
                     String value = JSON.toJSONString(signature);
                     jedis.set(redisKey+appId, value);
