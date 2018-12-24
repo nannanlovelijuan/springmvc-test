@@ -7,3 +7,4 @@ cd cd D:\vscode\java\dataDistributionCenter\data-distribution-center\distributio
 call mvn clean
 call mvn compile
 call mvn package
+pause

@@ -16,12 +16,9 @@ import www.ezrpro.com.security.SignVerify;
 
 public class CommonInterceptor implements HandlerInterceptor{
 
-
     @Override
     public boolean preHandle(javax.servlet.http.HttpServletRequest httpServletRequest, javax.servlet.http.HttpServletResponse httpServletResponse, Object handler) throws Exception {
     
-       
-
         //每次有一个新的业务线过来，需要在redis里set对应的信息：hmset mapApp_1 appId 1 secret bigdataAppId1 expire 5
         String appId = httpServletRequest.getHeader("appId");
         String timestamp = httpServletRequest.getHeader("timestamp");
@@ -30,20 +27,16 @@ public class CommonInterceptor implements HandlerInterceptor{
         String signature = httpServletRequest.getHeader("signature");
 
 
-        if(StringUtils.isBlank(appId)){
-
-        }if(!StringUtils.isNumeric(timestamp)){
-
-        }if(StringUtils.isBlank(nonce)){
-
-        }if(StringUtils.isBlank(sign)){
-
-        }if(StringUtils.isBlank(signature)){
-
+        boolean flag = (StringUtils.isBlank(appId))||(!StringUtils.isNumeric(timestamp))||(StringUtils.isBlank(nonce))||(StringUtils.isBlank(signature));
+        if(flag){
+            return false;
         }
-
-        SignVerify.verifySign(appId, Integer.valueOf(timestamp) , nonce, sign, signature);
-
+        
+        boolean verifySign = SignVerify.verifySign(appId, Integer.valueOf(timestamp) , nonce, sign, signature);
+        if(!verifySign){
+            return false;
+        }
+        
         return true;
     }
 
