@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration debug="false" xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%p] [%d{yyyy-MM-dd HH:mm:ss}][%c]%m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="levelMin" value="INFO" />
+            <param name="levelMax" value="ERROR" />
+        </filter>
+    </appender>
+
+    <appender name="Info" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="../dynamicLabel/logs/info"/>
+        <param name="DatePattern" value="'.log.'yyyy-MM-dd"/>
+        <param name="Append" value="true"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%p] [%d{yyyy-MM-dd HH:mm:ss}][%c]%m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="levelMin" value="INFO" />
+            <param name="levelMax" value="ERROR" />
+        </filter>
+    </appender>
+
+    <appender name="Error" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="../dynamicLabel/logs/error"/>
+        <param name="DatePattern" value="'.log.'yyyy-MM-dd"/>
+        <param name="Append" value="true"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <!--<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss a} [Thread: %t][ Class:%c Method: %l ]%n%p:%m%n"/>-->
+            <param name="ConversionPattern" value="[%p] [%d{yyyy-MM-dd HH:mm:ss}][%c]%m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="ERROR"/>
+            <param name="LevelMax" value="ERROR"/>
+            <param name="AcceptOnMatch" value="true" />
+        </filter>
+    </appender>
+
+
+    <logger name="org.apache.kafka" additivity="false">
+        <level value = "error" />
+        <appender-ref ref="Error" />
+    </logger>
+    <logger name="org.springframework" additivity="false">
+        <level value="error"/>
+        <appender-ref ref="Error"/>
+    </logger>
+
+    <root>
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="Info"/>
+        <appender-ref ref="Error"/>
+    </root>
+</log4j:configuration>

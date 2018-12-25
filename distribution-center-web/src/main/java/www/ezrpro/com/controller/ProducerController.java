@@ -7,10 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import www.ezrpro.com.model.ClientRequest;
 import www.ezrpro.com.model.ServiceRespon;
 import www.ezrpro.com.producer.ProducerService;
-import www.ezrpro.com.security.SignVerify;
 import www.ezrpro.com.util.KafkaUtil;
 
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author liyuelin

@@ -2,8 +2,7 @@ package www.ezrpro.com.producer.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -22,7 +21,7 @@ import java.util.Random;
 @Service
 public class ProducerServiceImpl implements ProducerService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ProducerServiceImpl.class);
+    private Logger logger = Logger.getLogger(ProducerServiceImpl.class);
 
     @Autowired
     private KafkaTemplate<String,String> template;
@@ -34,8 +33,6 @@ public class ProducerServiceImpl implements ProducerService {
 
         jsonObj.put("topic", topic);
         jsonObj.put("ts", System.currentTimeMillis() + "");
-
-        logger.info("json+++++++++++++++++++++  message = {}", jsonObj.toJSONString());
         if (KafkaUtil.createTopic(topic)){
             String key = String.valueOf(new Random().nextInt(9));
             ListenableFuture<SendResult<String, String>> future = template.send(topic, key,jsonObj.toJSONString());
