@@ -23,25 +23,12 @@ public class ProducerController {
 
     @RequestMapping(value = "/send",method = RequestMethod.POST)
     @ResponseBody
-    public ServiceRespon<String> sendMsg(@RequestParam("timestamp") int timestamp,
-                                 @RequestParam("appId") String appId,
-                                 @RequestParam("nonce") String nonce,
-                                 @RequestParam("sign") String sign,
-                                 @RequestParam("signature") String signature,
-                                 HttpServletRequest request
-            ){
-        String data = request.getParameter("data");
+    public ServiceRespon<String> sendMsg(@RequestBody String data ){
         ClientRequest clientRequest = JSON.parseObject(data,ClientRequest.class);
-        boolean verification = SignVerify.verifySign(appId,timestamp,nonce,sign,signature);
 
         String dataJson = clientRequest.getData();
         ServiceRespon<String> serviceRespon = new ServiceRespon<String>();
-        if (!verification){
-            serviceRespon.setStatus(false);
-            serviceRespon.setStatusCode(401);
-            serviceRespon.setMsg("验证失败！");
-            return  serviceRespon;
-        }else if (clientRequest.getIdType()!= 1 && clientRequest.getIdType()!=2){
+        if (clientRequest.getIdType()!= 1 && clientRequest.getIdType()!=2){
             serviceRespon.setStatus(false);
             serviceRespon.setStatusCode(401);
             serviceRespon.setMsg("idtype = "+clientRequest.getIdType()+"\t"+"不符合规则");
