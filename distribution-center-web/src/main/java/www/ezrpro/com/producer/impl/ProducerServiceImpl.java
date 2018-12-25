@@ -25,7 +25,7 @@ public class ProducerServiceImpl implements ProducerService {
     private static final Logger logger = LoggerFactory.getLogger(ProducerServiceImpl.class);
 
     @Autowired
-    private KafkaTemplate template;
+    private KafkaTemplate<String,String> template;
 
     //发送消息方法
     public void sendJson(String topic, String json) {
@@ -53,6 +53,5 @@ public class ProducerServiceImpl implements ProducerService {
         }else{
             logger.error("主题创建失败！");
         }
-
     }
 }

@@ -23,7 +23,7 @@ public class ProducerController {
 
     @RequestMapping(value = "/send",method = RequestMethod.POST)
     @ResponseBody
-    public ServiceRespon sendMsg(@RequestParam("timestamp") int timestamp,
+    public ServiceRespon<String> sendMsg(@RequestParam("timestamp") int timestamp,
                                  @RequestParam("appId") String appId,
                                  @RequestParam("nonce") String nonce,
                                  @RequestParam("sign") String sign,
@@ -35,7 +35,7 @@ public class ProducerController {
         boolean verification = SignVerify.verifySign(appId,timestamp,nonce,sign,signature);
 
         String dataJson = clientRequest.getData();
-        ServiceRespon serviceRespon = new ServiceRespon();
+        ServiceRespon<String> serviceRespon = new ServiceRespon<String>();
         if (!verification){
             serviceRespon.setStatus(false);
             serviceRespon.setStatusCode(401);
