@@ -2,7 +2,11 @@ package www.ezrpro.com.producer.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.mongodb.async.client.MongoClient;
+import com.mongodb.async.client.MongoCollection;
+import com.mongodb.async.client.MongoDatabase;
 import org.apache.log4j.Logger;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -11,7 +15,11 @@ import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 import www.ezrpro.com.producer.ProducerService;
 import www.ezrpro.com.util.KafkaUtil;
+import www.ezrpro.com.util.MongoClientSingleton;
+import www.ezrpro.com.util.MongoUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -22,29 +30,43 @@ import java.util.Random;
 public class ProducerServiceImpl implements ProducerService {
 
     private Logger logger = Logger.getLogger(ProducerServiceImpl.class);
+    private List<Document> docs = new ArrayList<Document>();
+    private final MongoClient mongoClient = MongoClientSingleton.INSTANCE.getMongoClient();
 
     @Autowired
     private KafkaTemplate<String,String> template;
 
     //发送消息方法
-    public void sendJson(String topic, String json) {
+    public void sendJson(String topic,String json) {
 
-        JSONObject jsonObj = JSON.parseObject(json);
+        final JSONObject jsonObj = JSON.parseObject(json);
+        MongoDatabase mongoDatabase = mongoClient.getDatabase("ezp-bigdata-log");
+        final MongoCollection<Document> collectionError = mongoDatabase.getCollection("webApiLogError");
+        final MongoCollection<Document> collectionInfo = mongoDatabase.getCollection("webApiLogInfo");
 
         jsonObj.put("topic", topic);
-        jsonObj.put("ts", System.currentTimeMillis() + "");
+        jsonObj.put("timeMillis", System.currentTimeMillis() + "");
+        jsonObj.put("data",json);
         if (KafkaUtil.createTopic(topic)){
             String key = String.valueOf(new Random().nextInt(9));
             ListenableFuture<SendResult<String, String>> future = template.send(topic, key,jsonObj.toJSONString());
             future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
                 @Override
                 public void onSuccess(SendResult<String, String> result) {
-                    logger.info("msg OK." + result.toString());
+                    jsonObj.put("state","消息发送成功");
+                    Document document = new Document(jsonObj);
+                    docs.add(document);
+                    if (docs.size()==100){
+                        MongoUtil.insertMany(docs,collectionInfo);
+                        docs.clear();
+                    }
                 }
 
                 @Override
                 public void onFailure(Throwable ex) {
-                    logger.warn("msg send failed: ");
+                    jsonObj.put("state","消息发送失败");
+                    Document document = new Document(jsonObj);
+                    MongoUtil.insertOne(document, collectionError);
                 }
             });
         }else{
