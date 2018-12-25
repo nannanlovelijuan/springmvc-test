@@ -53,7 +53,7 @@ public class CommonInterceptor implements HandlerInterceptor{
         boolean flag = (StringUtils.isNotBlank(appId))||(!StringUtils.isNumeric(timestamp))||(StringUtils.isNotBlank(nonce))||(StringUtils.isNotBlank(signature));
         if(!flag){
             jsonObject.put("msg", "请求参数不合法");
-            Document document = new Document(UUID.randomUUID().toString(),jsonObject);
+            Document document = new Document(jsonObject);
             MongoUtil.insertOne(document, collectionError);
             return false;
         }
@@ -67,7 +67,7 @@ public class CommonInterceptor implements HandlerInterceptor{
         }
 
         jsonObject.put("msg", "有效的签名");
-        Document document = new Document(UUID.randomUUID().toString(),jsonObject);
+        Document document = new Document(jsonObject);
         MongoUtil.insertOne(document, collectionInfo);
         return verifySign;
 
