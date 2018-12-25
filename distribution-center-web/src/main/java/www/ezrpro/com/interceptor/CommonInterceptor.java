@@ -1,11 +1,23 @@
 package www.ezrpro.com.interceptor;
 
 
+import org.bson.Document;
+
+import java.util.UUID;
+
+import com.alibaba.fastjson.JSONObject;
+import com.mongodb.async.SingleResultCallback;
+import com.mongodb.async.client.MongoClient;
+import com.mongodb.async.client.MongoCollection;
+import com.mongodb.async.client.MongoDatabase;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import www.ezrpro.com.security.SignVerify;
+import www.ezrpro.com.util.MongoClientSingleton;
+import www.ezrpro.com.util.MongoUtil;
 
 /**
  * 
@@ -16,19 +28,46 @@ import www.ezrpro.com.security.SignVerify;
 
 public class CommonInterceptor implements HandlerInterceptor{
 
+    private final MongoClient mongoClient = MongoClientSingleton.INSTANCE.getMongoClient();
+    
     @Override
     public boolean preHandle(javax.servlet.http.HttpServletRequest httpServletRequest, javax.servlet.http.HttpServletResponse httpServletResponse, Object handler) throws Exception {
-        //每次有一个新的业务线过来，需要在redis里set对应的信息：hmset mapApp_1 appId 1 secret bigdataAppId1 expire 5
         String appId = httpServletRequest.getHeader("appId");
         String timestamp = httpServletRequest.getHeader("timestamp");
         String nonce = httpServletRequest.getHeader("nonce");
         String sign = httpServletRequest.getHeader("sign");
         String signature = httpServletRequest.getHeader("signature");
 
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("appId", appId);
+        jsonObject.put("timestamp", timestamp);
+        jsonObject.put("nonce", nonce);
+        jsonObject.put("sign", sign);
+        jsonObject.put("signature", signature);
+
+
+        MongoDatabase mongoDatabase = mongoClient.getDatabase("ezp-bigdata-log");
+        MongoCollection<Document> collectionError = mongoDatabase.getCollection("webApiLogInterceptorError");
+        MongoCollection<Document> collectionInfo = mongoDatabase.getCollection("webApiLogInterceptorInfo");
+        
         boolean flag = (StringUtils.isNotBlank(appId))||(!StringUtils.isNumeric(timestamp))||(StringUtils.isNotBlank(nonce))||(StringUtils.isNotBlank(signature));
         if(!flag){
+            jsonObject.put("msg", "请求参数不合法");
+            Document document = new Document(UUID.randomUUID().toString(),jsonObject);
+            MongoUtil.insertOne(document, collectionError);
             return false;
         }
+
+        boolean flag2 = SignVerify.verifySign(appId, Integer.valueOf(timestamp) , nonce, sign, signature);
+        if(!flag2){
+            jsonObject.put("msg", "签名验证不通过");
+            Document document = new Document(UUID.randomUUID().toString(),jsonObject);
+            MongoUtil.insertOne(document, collectionError);
+        }
+
+        jsonObject.put("msg", "有效的签名");
+        Document document = new Document(UUID.randomUUID().toString(),jsonObject);
+        MongoUtil.insertOne(document, collectionInfo);
         return SignVerify.verifySign(appId, Integer.valueOf(timestamp) , nonce, sign, signature);
 
     }
