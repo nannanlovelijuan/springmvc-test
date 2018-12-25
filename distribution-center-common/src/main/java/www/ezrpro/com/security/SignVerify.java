@@ -75,7 +75,7 @@ public class SignVerify{
         Signature signature = null;
         Jedis jedis = JedisClientFactory.getJedisClient();
         JedisLock jedisLock = new JedisLock("ezr.bd.ezsync.lock","lockkey");
-        String data = jedis.get(appId);
+        String data = jedis.get(redisKey+appId);
         if(StringUtils.isBlank(data)){
             try {
                 if (jedisLock.tryLock()) {

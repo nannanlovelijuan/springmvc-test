@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - SignVerify",
+            "request": "launch",
+            "mainClass": "www.ezrpro.com.security.SignVerify",
+            "projectName": "distribution-center-common"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - DbUtilTest",
             "request": "launch",
             "mainClass": "www.ezrpro.com.util.DbUtilTest",
