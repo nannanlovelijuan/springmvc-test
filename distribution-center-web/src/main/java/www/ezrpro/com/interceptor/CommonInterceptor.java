@@ -29,7 +29,7 @@ import www.ezrpro.com.util.MongoUtil;
 public class CommonInterceptor implements HandlerInterceptor{
 
     private final MongoClient mongoClient = MongoClientSingleton.INSTANCE.getMongoClient();
-    
+
     @Override
     public boolean preHandle(javax.servlet.http.HttpServletRequest httpServletRequest, javax.servlet.http.HttpServletResponse httpServletResponse, Object handler) throws Exception {
         String appId = httpServletRequest.getHeader("appId");
@@ -58,17 +58,18 @@ public class CommonInterceptor implements HandlerInterceptor{
             return false;
         }
 
-        boolean flag2 = SignVerify.verifySign(appId, Integer.valueOf(timestamp) , nonce, sign, signature);
-        if(!flag2){
+        boolean verifySign = SignVerify.verifySign(appId, Integer.valueOf(timestamp) , nonce, sign, signature);
+        if(!verifySign){
             jsonObject.put("msg", "签名验证不通过");
             Document document = new Document(UUID.randomUUID().toString(),jsonObject);
             MongoUtil.insertOne(document, collectionError);
+            return false;
         }
 
         jsonObject.put("msg", "有效的签名");
         Document document = new Document(UUID.randomUUID().toString(),jsonObject);
         MongoUtil.insertOne(document, collectionInfo);
-        return SignVerify.verifySign(appId, Integer.valueOf(timestamp) , nonce, sign, signature);
+        return verifySign;
 
     }
 
