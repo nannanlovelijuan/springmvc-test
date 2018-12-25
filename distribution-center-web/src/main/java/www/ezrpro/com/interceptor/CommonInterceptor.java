@@ -61,7 +61,7 @@ public class CommonInterceptor implements HandlerInterceptor{
         boolean verifySign = SignVerify.verifySign(appId, Integer.valueOf(timestamp) , nonce, sign, signature);
         if(!verifySign){
             jsonObject.put("msg", "签名验证不通过");
-            Document document = new Document(UUID.randomUUID().toString(),jsonObject);
+            Document document = new Document(jsonObject);
             MongoUtil.insertOne(document, collectionError);
             return false;
         }

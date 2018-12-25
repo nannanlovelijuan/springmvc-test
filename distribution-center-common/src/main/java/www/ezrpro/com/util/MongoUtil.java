@@ -32,7 +32,6 @@ public class MongoUtil{
                 }else{
                     System.out.println("存储失败");
                 }
-
             }
         });
     }
