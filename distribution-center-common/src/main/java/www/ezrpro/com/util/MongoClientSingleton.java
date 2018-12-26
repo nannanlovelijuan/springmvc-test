@@ -21,7 +21,9 @@ public enum MongoClientSingleton{
     private MongoClient mongoClient =null;
 
     private MongoClientSingleton(){
-        ClusterSettings clusterSettings = ClusterSettings.builder().hosts(Arrays.asList(new ServerAddress("192.168.12.31"))).build();
+        ClusterSettings clusterSettings = ClusterSettings
+        .builder()
+        .hosts(Arrays.asList(new ServerAddress("192.168.12.139",20000),new ServerAddress("192.168.12.141",20000),new ServerAddress("192.168.12.142",20000))).build();
         MongoClientSettings settings = MongoClientSettings.builder().clusterSettings(clusterSettings).build();
         mongoClient = MongoClients.create(settings);
     }
