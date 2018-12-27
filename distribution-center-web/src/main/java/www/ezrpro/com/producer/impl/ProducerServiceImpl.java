@@ -33,6 +33,9 @@ public class ProducerServiceImpl implements ProducerService {
     private Logger logger = Logger.getLogger(ProducerServiceImpl.class);
     private List<Document> docs = new ArrayList<Document>();
     private final MongoClient mongoClient = MongoClientSingleton.INSTANCE.getMongoClient();
+    MongoDatabase mongoDatabase = mongoClient.getDatabase("ezp-bigdata-log");
+    MongoCollection<Document> collectionError = mongoDatabase.getCollection("webApiLogError");
+    MongoCollection<Document> collectionInfo = mongoDatabase.getCollection("webApiLogInfo");
 
     @Autowired
     private KafkaTemplate<String,String> template;
@@ -41,9 +44,6 @@ public class ProducerServiceImpl implements ProducerService {
     public void sendJson(String topic,String json) {
 
         final JSONObject jsonObj = JSON.parseObject(json);
-        MongoDatabase mongoDatabase = mongoClient.getDatabase("ezp-bigdata-log");
-        final MongoCollection<Document> collectionError = mongoDatabase.getCollection("webApiLogError");
-        final MongoCollection<Document> collectionInfo = mongoDatabase.getCollection("webApiLogInfo");
 
         jsonObj.put("topic", topic);
         jsonObj.put("timeMillis", System.currentTimeMillis());
