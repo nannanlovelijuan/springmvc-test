@@ -29,6 +29,10 @@ public class CommonInterceptor implements HandlerInterceptor{
 
     private final MongoClient mongoClient = MongoClientSingleton.INSTANCE.getMongoClient();
 
+    MongoDatabase mongoDatabase = mongoClient.getDatabase("ezp-bigdata-log");
+    MongoCollection<Document> collectionError = mongoDatabase.getCollection("webApiLogInterceptorError");
+    MongoCollection<Document> collectionInfo = mongoDatabase.getCollection("webApiLogInterceptorInfo");
+    
     @Override
     public boolean preHandle(javax.servlet.http.HttpServletRequest httpServletRequest, javax.servlet.http.HttpServletResponse httpServletResponse, Object handler) throws Exception {
         String appId = httpServletRequest.getHeader("appId");
@@ -46,10 +50,6 @@ public class CommonInterceptor implements HandlerInterceptor{
         jsonObject.put("signature", signature);
         jsonObject.put("id",UUID.randomUUID().toString());
 
-        MongoDatabase mongoDatabase = mongoClient.getDatabase("ezp-bigdata-log");
-        MongoCollection<Document> collectionError = mongoDatabase.getCollection("webApiLogInterceptorError");
-        MongoCollection<Document> collectionInfo = mongoDatabase.getCollection("webApiLogInterceptorInfo");
-        
         boolean flag = (StringUtils.isNotBlank(appId))||(!StringUtils.isNumeric(timestamp))||(StringUtils.isNotBlank(nonce))||(StringUtils.isNotBlank(signature));
         if(!flag){
             jsonObject.put("msg", "请求参数不合法");
