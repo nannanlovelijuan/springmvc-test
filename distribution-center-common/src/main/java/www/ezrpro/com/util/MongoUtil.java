@@ -6,6 +6,7 @@ import com.mongodb.async.SingleResultCallback;
 import com.mongodb.async.client.MongoCollection;
 
 import org.bson.Document;
+import org.apache.log4j.Logger;
 
 /**
  * 
@@ -16,13 +17,13 @@ import org.bson.Document;
 
 public class MongoUtil{
 
+    private static Logger logger = Logger.getLogger(MongoUtil.class);
+
     private static SingleResultCallback<Void> src = new SingleResultCallback<Void>() {
         @Override
         public void onResult(final Void result, final Throwable t) {
-            if(t == null){
-                System.out.println("Inserted!");
-            }else{
-                System.out.println("存储失败");
+            if(t != null){
+                logger.error(t.getMessage());
             }
         }
     };
