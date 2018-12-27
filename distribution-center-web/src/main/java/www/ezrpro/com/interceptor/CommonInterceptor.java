@@ -6,7 +6,6 @@ import org.bson.Document;
 import java.util.UUID;
 
 import com.alibaba.fastjson.JSONObject;
-import com.mongodb.async.SingleResultCallback;
 import com.mongodb.async.client.MongoClient;
 import com.mongodb.async.client.MongoCollection;
 import com.mongodb.async.client.MongoDatabase;
@@ -44,7 +43,7 @@ public class CommonInterceptor implements HandlerInterceptor{
         jsonObject.put("nonce", nonce);
         jsonObject.put("sign", sign);
         jsonObject.put("signature", signature);
-
+        jsonObject.put("id",UUID.randomUUID().toString());
 
         MongoDatabase mongoDatabase = mongoClient.getDatabase("ezp-bigdata-log");
         MongoCollection<Document> collectionError = mongoDatabase.getCollection("webApiLogInterceptorError");

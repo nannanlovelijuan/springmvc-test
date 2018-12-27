@@ -21,6 +21,7 @@ import www.ezrpro.com.util.MongoUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * @author liyuelin
@@ -54,6 +55,7 @@ public class ProducerServiceImpl implements ProducerService {
                 @Override
                 public void onSuccess(SendResult<String, String> result) {
                     jsonObj.put("state","消息发送成功");
+                    jsonObj.put("id",UUID.randomUUID().toString());
                     Document document = new Document(jsonObj);
                     docs.add(document);
                     if (docs.size()==100){
@@ -65,6 +67,7 @@ public class ProducerServiceImpl implements ProducerService {
                 @Override
                 public void onFailure(Throwable ex) {
                     jsonObj.put("state","消息发送失败");
+                    jsonObj.put("id",UUID.randomUUID().toString());
                     Document document = new Document(jsonObj);
                     MongoUtil.insertOne(document, collectionError);
                 }

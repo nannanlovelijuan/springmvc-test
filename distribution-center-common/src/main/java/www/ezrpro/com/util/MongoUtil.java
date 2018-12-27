@@ -1,16 +1,9 @@
 package www.ezrpro.com.util;
 
-import java.util.Arrays;
 import java.util.List;
 
-import com.mongodb.ServerAddress;
 import com.mongodb.async.SingleResultCallback;
-import com.mongodb.async.client.MongoClient;
-import com.mongodb.async.client.MongoClientSettings;
-import com.mongodb.async.client.MongoClients;
 import com.mongodb.async.client.MongoCollection;
-import com.mongodb.async.client.MongoDatabase;
-import com.mongodb.connection.ClusterSettings;
 
 import org.bson.Document;
 
