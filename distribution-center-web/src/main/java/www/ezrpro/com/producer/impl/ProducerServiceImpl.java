@@ -46,7 +46,7 @@ public class ProducerServiceImpl implements ProducerService {
         final MongoCollection<Document> collectionInfo = mongoDatabase.getCollection("webApiLogInfo");
 
         jsonObj.put("topic", topic);
-        jsonObj.put("timeMillis", System.currentTimeMillis() + "");
+        jsonObj.put("timeMillis", System.currentTimeMillis());
         jsonObj.put("data",json);
         if (KafkaUtil.createTopic(topic)){
             String key = String.valueOf(new Random().nextInt(9));

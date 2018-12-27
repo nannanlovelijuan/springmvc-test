@@ -38,6 +38,7 @@ public class CommonInterceptor implements HandlerInterceptor{
         String signature = httpServletRequest.getHeader("signature");
 
         JSONObject jsonObject = new JSONObject();
+        jsonObject.put("timeMillis", System.currentTimeMillis());
         jsonObject.put("appId", appId);
         jsonObject.put("timestamp", timestamp);
         jsonObject.put("nonce", nonce);
