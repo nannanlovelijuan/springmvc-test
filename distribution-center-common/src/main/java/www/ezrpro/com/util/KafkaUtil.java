@@ -34,7 +34,7 @@ public class KafkaUtil {
 
     public static String getTopic(int id,int idtype,String appid,String tablieName){
 
-        return getShardingGrp(id,idtype)+appid+tablieName;
+        return getShardingGrp(id,idtype)+"_"+appid+"_"+tablieName;
     }
 
     public static KafkaAdmin admin() {

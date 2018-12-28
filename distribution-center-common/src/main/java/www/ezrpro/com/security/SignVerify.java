@@ -27,7 +27,7 @@ public class SignVerify{
 
     private final static String redisKey = "www.ezrpro.com.bigdata.webApi:";
     private final static String secretKey ="www.ezrpro.com.bigdata.secret:";
-    private final static int minuts = 5;
+    private final static int minuts = 30;
 
     /**
      * 签名验证
@@ -48,7 +48,7 @@ public class SignVerify{
         if(signTime.getMillis()/1000>timestamp){
             return false;
         }
-        String conStr = "app_id=" + appId + "&nonce=" + nonce + "&sign=" + sign + "&timestamp=" + timestamp;
+        String conStr = "appId=" + appId + "&nonce=" + nonce + "&sign=" + sign + "&timestamp=" + timestamp;
         String secret = signatureObj.getAppSecret();
         String ss = "";
         try {

@@ -43,7 +43,7 @@ public class JedisClientFactory {
 //                setRedisPassword(JedisConfig.getRedisPassword());
 //            }
 //            setRedisDatabase(JedisConfig.getRedisDatabase());
-            setJedisPool("127.0.0.1",6379, null,0);
+            setJedisPool("192.168.12.42",6379, null,0);
         }
 
         public static JedisPool getJedisPool() {

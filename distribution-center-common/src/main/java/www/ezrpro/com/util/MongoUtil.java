@@ -24,6 +24,8 @@ public class MongoUtil{
         public void onResult(final Void result, final Throwable t) {
             if(t != null){
                 logger.error(t.getMessage());
+            }else{
+                logger.info("插入成功");
             }
         }
     };

@@ -74,6 +74,10 @@ public class ProducerServiceImpl implements ProducerService {
             });
         }else{
             logger.error("主题创建失败！");
+            jsonObj.put("state","主题创建失败");
+            jsonObj.put("id",UUID.randomUUID().toString());
+            Document document = new Document(jsonObj);
+            MongoUtil.insertOne(document, collectionError);
         }
     }
 }
