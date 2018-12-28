@@ -4,6 +4,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.Protocol;
+import www.ezrpro.com.util.ConfigHelp;
 
 /**
 * 
@@ -13,10 +14,6 @@ import redis.clients.jedis.Protocol;
 */
 
 public class JedisClientFactory {
-
-    static {
-        //new JedisConfig();
-    }
 
     public static Jedis getJedisClient() {
         return JedisPoolHolder.getJedisPool().getResource();
@@ -37,13 +34,9 @@ public class JedisClientFactory {
         }
 
         static {
-            //setRedisHost(JedisConfig.getRedisHost());
-//            setRedisPort(JedisConfig.getRedisPort());
-//            if (null != JedisConfig.getRedisPassword() && !JedisConfig.getRedisPassword().isEmpty()) {
-//                setRedisPassword(JedisConfig.getRedisPassword());
-//            }
-//            setRedisDatabase(JedisConfig.getRedisDatabase());
-            setJedisPool("192.168.12.42",6379, null,0);
+            String redisHost = ConfigHelp.getValue("redisHost");
+            int redisPort = Integer.parseInt(ConfigHelp.getValue("redisPort"));
+            setJedisPool(redisHost,redisPort, null,0);
         }
 
         public static JedisPool getJedisPool() {

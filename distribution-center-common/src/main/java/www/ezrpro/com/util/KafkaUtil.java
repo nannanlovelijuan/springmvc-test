@@ -39,7 +39,7 @@ public class KafkaUtil {
 
     public static KafkaAdmin admin() {
         Map<String, Object> configs = new HashMap<>();
-        String hosts = "cluster2-slave2:9092,cluster2-slave3:9092,cluster2-slave4:9092";
+        String hosts = ConfigHelp.getValue(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG);
         configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, hosts);
         return new KafkaAdmin(configs);
     }
@@ -69,7 +69,11 @@ public class KafkaUtil {
             }else {
                 KafkaAdmin kafkaAdmin = admin();
                 AdminClient adminClient = AdminClient.create(kafkaAdmin.getConfig());
-                NewTopic newTopic = new NewTopic(topicname,3,(short)3);
+                //分区数
+                int numPartitions = Integer.parseInt(ConfigHelp.getValue("numPartitions"));
+                //复制数
+                short replicationFactor = Short.parseShort(ConfigHelp.getValue("replicationFactor"));
+                NewTopic newTopic = new NewTopic(topicname,numPartitions,replicationFactor);
                 List<NewTopic> topicList = Arrays.asList(newTopic);
                 adminClient.createTopics(topicList);
                 adminClient.close();

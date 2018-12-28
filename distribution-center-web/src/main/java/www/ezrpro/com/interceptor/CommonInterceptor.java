@@ -35,11 +35,11 @@ public class CommonInterceptor implements HandlerInterceptor{
     
     @Override
     public boolean preHandle(javax.servlet.http.HttpServletRequest httpServletRequest, javax.servlet.http.HttpServletResponse httpServletResponse, Object handler) throws Exception {
-        String appId = httpServletRequest.getHeader("appId");
-        String timestamp = httpServletRequest.getHeader("timestamp");
-        String nonce = httpServletRequest.getHeader("nonce");
-        String sign = httpServletRequest.getHeader("sign");
-        String signature = httpServletRequest.getHeader("signature");
+        String appId = httpServletRequest.getParameter("appId");
+        String timestamp = httpServletRequest.getParameter("timestamp");
+        String nonce = httpServletRequest.getParameter("nonce");
+        String sign = httpServletRequest.getParameter("sign");
+        String signature = httpServletRequest.getParameter("signature");
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("timeMillis", System.currentTimeMillis());

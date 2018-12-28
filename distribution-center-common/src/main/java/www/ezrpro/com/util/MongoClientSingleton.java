@@ -1,6 +1,7 @@
 package www.ezrpro.com.util;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.mongodb.ServerAddress;
 import com.mongodb.async.client.MongoClient;
@@ -18,12 +19,20 @@ import com.mongodb.connection.ClusterSettings;
 public enum MongoClientSingleton{
 
     INSTANCE;
-    private MongoClient mongoClient =null;
+    private MongoClient mongoClient;
 
-    private MongoClientSingleton(){
+    private List<ServerAddress> sas;
+    MongoClientSingleton(){
+        String mongoServer = ConfigHelp.getValue("mongodb.server");
+        if (sas==null){
+            sas = new ArrayList<>();
+            for (String ip:mongoServer.split(";")) {
+                sas.add(new ServerAddress(ip,20000));
+            }
+        }
         ClusterSettings clusterSettings = ClusterSettings
         .builder()
-        .hosts(Arrays.asList(new ServerAddress("192.168.12.139",20000),new ServerAddress("192.168.12.141",20000),new ServerAddress("192.168.12.142",20000))).build();
+        .hosts(sas).build();
         MongoClientSettings settings = MongoClientSettings.builder().clusterSettings(clusterSettings).build();
         mongoClient = MongoClients.create(settings);
     }

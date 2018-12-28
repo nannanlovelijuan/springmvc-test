@@ -16,7 +16,7 @@ public class EncodeUtil{
      */
     public static String byte2Hex(byte[] bytes){
         StringBuffer stringBuffer = new StringBuffer();
-       String temp = null;
+        String temp ;
         for (int i=0;i<bytes.length;i++){
             temp = Integer.toHexString(bytes[i] & 0xFF);
             if (temp.length()==1){

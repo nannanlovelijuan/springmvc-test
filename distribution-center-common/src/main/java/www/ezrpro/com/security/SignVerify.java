@@ -13,6 +13,7 @@ import org.joda.time.DateTime;
 import redis.clients.jedis.Jedis;
 import www.ezrpro.com.model.Signature;
 import www.ezrpro.com.redis.*;
+import www.ezrpro.com.util.ConfigHelp;
 
 /**
  * 
@@ -25,9 +26,9 @@ public class SignVerify{
 
 
 
-    private final static String redisKey = "www.ezrpro.com.bigdata.webApi:";
-    private final static String secretKey ="www.ezrpro.com.bigdata.secret:";
-    private final static int minuts = 30;
+    private final static String redisKey = ConfigHelp.getValue("redisKey");
+    private final static String secretKey =ConfigHelp.getValue("secretKey");
+    private final static int minuts = Integer.parseInt(ConfigHelp.getValue("minuts"));
 
     /**
      * 签名验证
