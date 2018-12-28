@@ -75,23 +75,28 @@ public class SignVerify{
         Signature signature = null;
         Jedis jedis = JedisClientFactory.getJedisClient();
         JedisLock jedisLock = new JedisLock("ezr.bd.ezsync.lock","lockkey");
-        String data = jedis.get(redisKey+appId);
-        if(StringUtils.isBlank(data)){
-            try {
-                if (jedisLock.tryLock()) {
-                    signature = new Signature();
-                    signature.setAppId(appId);
-                    signature.setAppSecret(secretKey+appId);
-                    signature.setExpireMinuts(minuts);
-                    String value = JSON.toJSONString(signature);
-                    jedis.set(redisKey+appId, value);
-                }
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+        try {
+            String data = jedis.get(redisKey+appId);
+            if(StringUtils.isBlank(data)){
+
+                    if (jedisLock.tryLock()) {
+                        signature = new Signature();
+                        signature.setAppId(appId);
+                        signature.setAppSecret(secretKey+appId);
+                        signature.setExpireMinuts(minuts);
+                        String value = JSON.toJSONString(signature);
+                        jedis.set(redisKey+appId, value);
+                    }
+
+            }else{
+                signature = JSONObject.parseObject(data,Signature.class);
             }
-        }else{
-            signature = JSONObject.parseObject(data,Signature.class);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }finally {
+            jedisLock.release();
+            jedis.close();
         }
         return signature;
     }
