@@ -43,8 +43,8 @@ public class ProducerServiceImpl implements ProducerService {
     //发送消息方法
     public void sendJson(String topic,String json) {
 
-        final JSONObject jsonObj = JSON.parseObject(json);
-
+//        final JSONObject jsonObj = JSON.parseObject(json);
+        final JSONObject jsonObj = new JSONObject();
         jsonObj.put("topic", topic);
         jsonObj.put("timeMillis", System.currentTimeMillis());
         jsonObj.put("data",json);
