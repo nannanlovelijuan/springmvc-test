@@ -41,6 +41,19 @@
         </filter>
     </appender>
 
+    <appender name="Debug" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="../dynamicLabel/logs/debug"/>
+        <param name="DatePattern" value="'.log.'yyyy-MM-dd"/>
+        <param name="Append" value="true"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%p] [%d{yyyy-MM-dd HH:mm:ss}][%c]%m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="levelMin" value="DEBUG" />
+            <param name="levelMax" value="ERROR" />
+        </filter>
+    </appender>
+
 
     <logger name="org.apache.kafka" additivity="false">
         <level value = "error" />
@@ -55,5 +68,6 @@
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="Info"/>
         <appender-ref ref="Error"/>
+        <appender-ref ref="Debug"/>
     </root>
 </log4j:configuration>

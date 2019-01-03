@@ -1,6 +1,5 @@
 package www.ezrpro.com.producer.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mongodb.async.client.MongoClient;
 import com.mongodb.async.client.MongoCollection;
@@ -41,9 +40,8 @@ public class ProducerServiceImpl implements ProducerService {
     private KafkaTemplate<String,String> template;
 
     //发送消息方法
-    public void sendJson(String topic,String json) {
+    public void sendJson(final String topic, final String json) {
 
-//        final JSONObject jsonObj = JSON.parseObject(json);
         final JSONObject jsonObj = new JSONObject();
         jsonObj.put("topic", topic);
         jsonObj.put("timeMillis", System.currentTimeMillis());
@@ -57,6 +55,7 @@ public class ProducerServiceImpl implements ProducerService {
                     jsonObj.put("state","消息发送成功");
                     jsonObj.put("id",UUID.randomUUID().toString());
                     Document document = new Document(jsonObj);
+                    logger.debug("\n"+"topic："+topic+"\n"+"data："+json);
                     docs.add(document);
                     if (docs.size()==100){
                         MongoUtil.insertMany(docs,collectionInfo);

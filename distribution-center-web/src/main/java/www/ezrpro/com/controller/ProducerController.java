@@ -38,7 +38,6 @@ public class ProducerController {
             return  serviceRespon;
         }
         String topic = KafkaUtil.getTopic(clientRequest.getId(),clientRequest.getIdType(),clientRequest.getAppId(),clientRequest.getTableName());
-
         producerService.sendJson(topic,dataJson);
         serviceRespon.setMsg("消息发送成功");
         serviceRespon.setStatus(true);
